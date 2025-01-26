@@ -26,9 +26,14 @@ def randomize_occupancy(rooms, occupancy_rate=0.3):
 
     for floor, room in occupied_rooms:
         rooms[floor][room] = False  # Mark as occupied
-
+        
 # Step 3: Booking functionality
 def book_rooms(rooms, num_rooms):
+    # Enforce the 5-room limit
+    if num_rooms > 5:
+        print("Cannot book more than 5 rooms at a time.")
+        return None  # Return None to indicate invalid booking
+
     booked_rooms = []
 
     # Rule 1: Try to book rooms on the same floor
@@ -59,6 +64,7 @@ def book_rooms(rooms, num_rooms):
     # If not enough rooms are available
     print("Not enough rooms available to fulfill the booking request.")
     return None
+
 
 # Step 4: Visualize the room status
 def visualize_rooms(rooms, booked_rooms=None):
@@ -97,12 +103,18 @@ def reset():
 @app.route("/book", methods=["POST"])
 def book():
     num_rooms = int(request.form.get("num_rooms", 0))
+
+    if num_rooms > 5:  # Enforce the limit here
+        message = "You can only book up to 5 rooms at a time."
+        return render_template("home.html", rooms=hotel_rooms, message=message)
+
     booked = book_rooms(hotel_rooms, num_rooms)
     if not booked:
         message = "No rooms available to fulfill the booking request."
     else:
         message = None
     return render_template("home.html", rooms=hotel_rooms, booked=booked, message=message)
+
 
 if __name__ == "__main__":
     # Initialize rooms once when the app starts
