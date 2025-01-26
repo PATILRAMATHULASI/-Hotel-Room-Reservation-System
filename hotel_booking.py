@@ -75,7 +75,7 @@ def visualize_rooms(rooms, booked_rooms=None):
 # Routes
 @app.route("/")
 def home():
-    initialize_rooms()
+    hotel_rooms = initialize_rooms()
     return render_template("home.html", rooms=hotel_rooms)
 
 @app.route("/randomize")
