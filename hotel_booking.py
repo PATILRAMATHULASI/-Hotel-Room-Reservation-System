@@ -3,7 +3,8 @@ import random
 
 app = Flask(__name__)
 
-global hotel_rooms = {}
+# Initialize hotel_rooms globally
+hotel_rooms = {}
 
 # Step 1: Initialize the hotel structure
 def initialize_rooms():
@@ -76,12 +77,14 @@ def visualize_rooms(rooms, booked_rooms=None):
 
 # Routes
 @app.route("/")
-hotel_rooms = initialize_rooms()
 def home():
+    # Ensure hotel_rooms is initialized before accessing the home route
+    global hotel_rooms  # Ensure we use the global hotel_rooms variable
     return render_template("home.html", rooms=hotel_rooms)
 
 @app.route("/randomize")
 def randomize():
+    global hotel_rooms
     randomize_occupancy(hotel_rooms)
     return redirect(url_for("home"))
 
@@ -102,6 +105,6 @@ def book():
     return render_template("home.html", rooms=hotel_rooms, booked=booked, message=message)
 
 if __name__ == "__main__":
-    # Step 1: Initialize rooms
+    # Initialize rooms once when the app starts
     hotel_rooms = initialize_rooms()
     app.run(debug=True)
