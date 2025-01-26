@@ -80,6 +80,7 @@ def home():
 
 @app.route("/randomize")
 def randomize():
+    hotel_rooms = initialize_rooms()
     randomize_occupancy(hotel_rooms)
     return redirect(url_for("home"))
 
