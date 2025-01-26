@@ -71,7 +71,7 @@ def visualize_rooms(rooms, booked_rooms=None):
                 floor_visual.append("🔴")  # Occupied
         floor_visuals.append(f"Floor {floor}: {' '.join(floor_visual)}")
     return "\n".join(floor_visuals)
-
+initialize_rooms()
 # Routes
 @app.route("/")
 def home():
